@@ -4,6 +4,8 @@ using DataAccess.Concrete.InMemory;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.Constants;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ConsoleUI
 {
@@ -11,7 +13,8 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            ProductTest();
+            //ProductTest();
+            ProductTestGetAll();
 
             //CategoryTest();
 
@@ -31,11 +34,44 @@ namespace ConsoleUI
         private static void ProductTest()
         {
             ProductManager productManager = new ProductManager(new EfProductDal());
-            foreach (var product in productManager.GetProductDetails())
+            var result = productManager.GetProductDetails();
+
+            if (result.Success == true)
             {
-                Console.WriteLine(product.ProductName +"/" + product.CategoryName);
+                foreach (var product in result.Data)
+                {
+                    Console.WriteLine(product.ProductName + "/" + product.CategoryName);
+
+                }
+                Console.WriteLine(result.Message);
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
 
             }
+
+        }
+        private static void ProductTestGetAll()
+        {
+            ProductManager productManager = new ProductManager(new EfProductDal());
+            var result = productManager.GetAll();
+
+            if (result.Success == true)
+            {
+                foreach (var product in result.Data)
+                {
+                    Console.WriteLine(product.ProductName);
+
+                }
+                Console.WriteLine(result.Message);
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+
+            }
+
         }
     }
 }
