@@ -7,6 +7,7 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -23,7 +24,7 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-
+        [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
